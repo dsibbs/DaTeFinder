@@ -6,70 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Web site created using create-snowpack-app" />
     <link rel="stylesheet" type="text/css" href="/index.css" />
-    <title>Snowpack App</title>
+    <title>Restaurant Finder</title>
+    <style>
+      .restaurant {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .restaurant img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+    </style>
   </head>
   <body>
-    <img id="img" src="/logo.svg" />
-    <canvas id="canvas"></canvas>
+    <h1>Find Restaurants</h1>
     <input type="text" id="locationInput" placeholder="Enter town name">
-    <button id="getLocationBtn">Get Location</button>
-    <div id="locationDisplay"></div>
+    <button id="getRestaurantsBtn">Get Restaurants</button>
+    <div id="restaurantList"></div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script type="module" src="/dist/index.js"></script>
     <script>
-      document.getElementById('getLocationBtn').addEventListener('click', () => {
+      document.getElementById('getRestaurantsBtn').addEventListener('click', () => {
         const townName = document.getElementById('locationInput').value;
         if (townName) {
-          fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(townName)}`)
-            .then(response => response.json())
-            .then(data => {
-              if (data && data.length > 0) {
-                const location = data[0];
-                document.getElementById('locationDisplay').innerHTML = `Latitude: ${location.lat}<br>Longitude: ${location.lon}`;
-                sendLocationToBackend(location);
-              } else {
-                document.getElementById('locationDisplay').innerHTML = "Location not found.";
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              document.getElementById('locationDisplay').innerHTML = "An error occurred.";
-            });
+          fetch(`http://localhost:5001/restaurants`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ location: townName }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            const restaurantList = document.getElementById('restaurantList');
+            restaurantList.innerHTML = '';
+            if (data.restaurants && data.restaurants.length > 0) {
+              data.restaurants.forEach(restaurant => {
+                const div = document.createElement('div');
+                div.className = 'restaurant';
+                div.innerHTML = `
+                  <h3>${restaurant.name}</h3>
+                  <img src="${restaurant.photo_url}" alt="${restaurant.name}">
+                  <p>${restaurant.address}</p>`;
+                restaurantList.appendChild(div);
+              });
+            } else {
+              restaurantList.innerHTML = 'No restaurants found.';
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('restaurantList').innerHTML = "An error occurred.";
+          });
         } else {
-          document.getElementById('locationDisplay').innerHTML = "Please enter a town name.";
+          document.getElementById('restaurantList').innerHTML = "Please enter a town name.";
         }
       });
-
-      function sendLocationToBackend(location) {
-        fetch('http://localhost:5001/location', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            lat: location.lat,
-            lon: location.lon,
-            name: location.display_name,
-          }),
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Success:', data);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-      }
     </script>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>
