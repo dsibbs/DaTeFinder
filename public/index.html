@@ -11,8 +11,56 @@
   <body>
     <img id="img" src="/logo.svg" />
     <canvas id="canvas"></canvas>
+    <input type="text" id="locationInput" placeholder="Enter town name">
+    <button id="getLocationBtn">Get Location</button>
+    <div id="locationDisplay"></div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <script type="module" src="/dist/index.js"></script>
+    <script>
+      document.getElementById('getLocationBtn').addEventListener('click', () => {
+        const townName = document.getElementById('locationInput').value;
+        if (townName) {
+          fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(townName)}`)
+            .then(response => response.json())
+            .then(data => {
+              if (data && data.length > 0) {
+                const location = data[0];
+                document.getElementById('locationDisplay').innerHTML = `Latitude: ${location.lat}<br>Longitude: ${location.lon}`;
+                sendLocationToBackend(location);
+              } else {
+                document.getElementById('locationDisplay').innerHTML = "Location not found.";
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              document.getElementById('locationDisplay').innerHTML = "An error occurred.";
+            });
+        } else {
+          document.getElementById('locationDisplay').innerHTML = "Please enter a town name.";
+        }
+      });
+
+      function sendLocationToBackend(location) {
+        fetch('http://localhost:5001/location', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            lat: location.lat,
+            lon: location.lon,
+            name: location.display_name,
+          }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      }
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
