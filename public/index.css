@@ -20,3 +20,15 @@ h1 {
 body {
   background-color: #379fc8;
 }
+
+.restaurant {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+      }
+.restaurant img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+      }
