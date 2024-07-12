@@ -7,10 +7,13 @@
 }
 
 #canvas {
-  display: block;
-  margin: 2rem auto;
-  width: 540px;
-  height: 540px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Ensures the canvas doesn't block interactions with other elements */
+  z-index: 9999; /* Ensures the canvas is on top */
 }
 
 h1 {
