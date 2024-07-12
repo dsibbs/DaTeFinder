@@ -24,9 +24,20 @@
   <body>
     <h1>Find Restaurants</h1>
     <input type="text" id="locationInput" placeholder="Enter town name">
+    <div>
+      <h3>Select food types:</h3>
+      <input type="checkbox" id="chinese" name="foodType" value="chinese">
+      <label for="chinese">Chinese</label>
+      <input type="checkbox" id="italian" name="foodType" value="italian">
+      <label for="italian">Italian</label>
+      <input type="checkbox" id="mexican" name="foodType" value="mexican">
+      <label for="mexican">Mexican</label>
+      <input type="checkbox" id="japanese" name="foodType" value="japanese">
+      <label for="japanese">Japanese</label>
+    </div>
     <button id="getRestaurantsBtn">Get Restaurants</button>
     <div id="restaurantList"></div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script src ="dist/index.js" type ="module"></script>
+    <script src="dist/index.js" type="module"></script>
   </body>
 </html>

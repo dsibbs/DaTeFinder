@@ -11,7 +11,8 @@ API_KEY = 'AIzaSyDUZtLgSCb9xWYb-kvYe9f-rDYLZXnQsvI'
 def get_restaurants():
     data = request.get_json()
     location = data.get('location')
-    
+    food_types = data.get('foodTypes', [])
+
     if not location:
         return jsonify({'error': 'Location is required'}), 400
 
@@ -26,8 +27,8 @@ def get_restaurants():
     lat = lat_lng['lat']
     lng = lat_lng['lng']
 
-    # Search for restaurants near the location
-    places_url = f'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius=1500&type=restaurant&key={API_KEY}'
+    keyword_query = '|'.join(food_types)
+    places_url = f'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius=1500&type=restaurant&keyword={keyword_query}&key={API_KEY}'
     places_response = requests.get(places_url).json()
 
     if 'results' not in places_response or not places_response['results']:
