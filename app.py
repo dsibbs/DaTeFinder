@@ -1,11 +1,14 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 
-API_KEY = 'AIzaSyDUZtLgSCb9xWYb-kvYe9f-rDYLZXnQsvI'
+API_KEY = str(os.getenv('API_KEY'))
 
 @app.route('/restaurants', methods=['POST'])
 def get_restaurants():
