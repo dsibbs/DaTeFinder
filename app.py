@@ -38,17 +38,24 @@ def get_restaurants():
         return jsonify({'error': 'No restaurants found'}), 404
 
     restaurants = []
-    for place in places_response['results'][:5]:  # Get the top 5 results
+    print("places_response is: ", places_response)
+    for place in places_response['results'][:5]:# Get the top 5 results
         # Get details including photos for each place
+        print("place is: ", place)
+        place_rating = place['rating']
+        place_open = place['opening_hours']['open_now']
         place_id = place['place_id']
         place_details_url = f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name,formatted_address,photo&key={API_KEY}'
         place_details_response = requests.get(place_details_url).json()
+        print("place_deatails_ response is: ", place_details_response)
 
         if 'result' in place_details_response:
             restaurant = {
                 'name': place_details_response['result']['name'],
                 'address': place_details_response['result']['formatted_address'],
-                'photo_url': get_photo_url(place_details_response['result']['photos'][0]['photo_reference']) if 'photos' in place_details_response['result'] else None
+                'photo_url': get_photo_url(place_details_response['result']['photos'][0]['photo_reference']) if 'photos' in place_details_response['result'] else None,
+                'rating': place_rating,
+                'open': "Yes" if place_open else "No"
             }
             restaurants.append(restaurant)
 

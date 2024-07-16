@@ -32,6 +32,8 @@ function fetchRestaurants() {
           div.innerHTML = `
             <h3>${restaurant.name}</h3>
             <img src="${restaurant.photo_url}" alt="${restaurant.name}">
+            <p>Rating: ${restaurant.rating}</p>
+            <p>Open Now: ${restaurant.open}</p>
             <p>${restaurant.address}</p>`;
           restaurantList.appendChild(div);
         });
@@ -74,6 +76,8 @@ function surpriseMe() {
         div.innerHTML = `
           <h3>${randomRestaurant.name}</h3>
           <img src="${randomRestaurant.photo_url}" alt="${randomRestaurant.name}">
+          <p>Rating: ${randomRestaurant.rating}</p>
+          <p>Open Now: ${randomRestaurant.open}</p>
           <p>${randomRestaurant.address}</p>`;
         restaurantList.appendChild(div);
         
