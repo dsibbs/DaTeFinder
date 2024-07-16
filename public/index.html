@@ -6,22 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Web site created using create-snowpack-app" />
     <link rel="stylesheet" type="text/css" href="/index.css" />
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/swiper/swiper-bundle.min.css"
+  />
     <title>DaTeFinder</title>
   </head>
   <body>
+    <canvas id="canvas"></canvas>
     <h1>DaTeFinder</h1>
     <h2>Find Restaurants</h2>
-    <canvas id="canvas"></canvas>
-    <input type="text" id="locationInput" placeholder="Enter town name">
+    <input type="text" id="locationInput" placeholder="Enter town name" />
     <div>
       <h3>Select food types:</h3>
-      <input type="checkbox" id="chinese" name="foodType" value="chinese">
+      <input type="checkbox" id="chinese" name="foodType" value="chinese" />
       <label for="chinese">Chinese</label>
-      <input type="checkbox" id="italian" name="foodType" value="italian">
+      <input type="checkbox" id="italian" name="foodType" value="italian" />
       <label for="italian">Italian</label>
-      <input type="checkbox" id="mexican" name="foodType" value="mexican">
+      <input type="checkbox" id="mexican" name="foodType" value="mexican" />
       <label for="mexican">Mexican</label>
-      <input type="checkbox" id="japanese" name="foodType" value="japanese">
+      <input type="checkbox" id="japanese" name="foodType" value="japanese" />
       <label for="japanese">Japanese</label>
       <input type="checkbox" id="jamaican" name="foodType" value="jamaican">
       <label for="jamaican">Jamaican</label>
@@ -32,8 +36,14 @@
     </div>
     <button id="getRestaurantsBtn">Get Restaurants</button>
     <button id="surpriseMeBtn">Surprise Me</button>
-    <div id="restaurantList"></div>
+    <div class="swiper-container">
+      <div class="swiper-wrapper" id="restaurantList"></div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="dist/index.js" type="module"></script>
   </body>
 </html>

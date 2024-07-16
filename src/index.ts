@@ -1,10 +1,27 @@
 import confetti from 'canvas-confetti';
-
+import Swiper from 'swiper/bundle';
 const confettiCanvas = document.getElementById('canvas');
 const confettiInstance = confetti.create(confettiCanvas, {
   resize: true,
   useWorker: true,
 });
+
+
+function initializeSwiper() {
+  new Swiper('.swiper-container', {
+    loop: true,
+    slidesPerView: 3,
+    spaceBetween: 300,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  });
+}
 
 function fetchRestaurants() {
   const townName = document.getElementById('locationInput').value;
@@ -28,15 +45,20 @@ function fetchRestaurants() {
       if (data.restaurants && data.restaurants.length > 0) {
         data.restaurants.forEach(restaurant => {
           const div = document.createElement('div');
-          div.className = 'restaurant';
+          div.className = 'swiper-slide';
           div.innerHTML = `
-            <h3>${restaurant.name}</h3>
-            <img src="${restaurant.photo_url}" alt="${restaurant.name}">
-            <p>Rating: ${restaurant.rating}</p>
-            <p>Open Now: ${restaurant.open}</p>
-            <p>${restaurant.address}</p>`;
+            <div class="restaurant-card">
+              <img src="${restaurant.photo_url}" alt="${restaurant.name}">
+              <div class="restaurant-card-content">
+                <h3>${restaurant.name}</h3>
+                <p>Rating: ${restaurant.rating}</p>
+                <p>Open Now: ${restaurant.open}</p>
+                <p>${restaurant.address}</p>
+              </div>
+            </div>`;
           restaurantList.appendChild(div);
         });
+        initializeSwiper();
       } else {
         restaurantList.innerHTML = 'No restaurants found.';
       }
@@ -72,15 +94,20 @@ function surpriseMe() {
       if (data.restaurants && data.restaurants.length > 0) {
         const randomRestaurant = data.restaurants[Math.floor(Math.random() * data.restaurants.length)];
         const div = document.createElement('div');
-        div.className = 'restaurant';
+        div.className = 'swiper-slide';
         div.innerHTML = `
-          <h3>${randomRestaurant.name}</h3>
-          <img src="${randomRestaurant.photo_url}" alt="${randomRestaurant.name}">
-          <p>Rating: ${randomRestaurant.rating}</p>
-          <p>Open Now: ${randomRestaurant.open}</p>
-          <p>${randomRestaurant.address}</p>`;
+          <div class="restaurant-card">
+            <img src="${randomRestaurant.photo_url}" alt="${randomRestaurant.name}">
+            <div class="restaurant-card-content">
+              <h3>${randomRestaurant.name}</h3>
+              <p>Rating: ${randomRestaurant.rating}</p>
+              <p>Open Now: ${randomRestaurant.open}</p>
+              <p>${randomRestaurant.address}</p>
+            </div>
+          </div>`;
         restaurantList.appendChild(div);
-        
+
+        initializeSwiper();
         confettiInstance({ particleCount: 200, spread: 200 });
       } else {
         restaurantList.innerHTML = 'No restaurants found.';

@@ -1,10 +1,4 @@
-#img {
-  display: block;
-  margin: auto;
-  height: 128px;
-  width: 128px;
-  padding: 2rem;
-}
+
 
 #canvas {
   position: fixed;
@@ -25,14 +19,74 @@ body {
   background-image: url('images/datefinder_img1.png')
 }
 
-.restaurant {
+.container {
+  text-align: center;
+}
+
+.restaurant-card {
   margin-bottom: 20px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-      }
-.restaurant img {
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  height: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-card img {
   max-width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.restaurant-card-content {
+  padding: 15px;
+  text-align: center;
+}
+
+.restaurant-card-content h3 {
+  margin: 10px 0;
+  font-size: 1.5em;
+}
+
+.restaurant-card-content p {
+  margin: 5px 0;
+  font-size: 1em;
+  color: #555;
+}
+
+
+.swiper-container {
+  width: 100%;
+  max-width: 350px;
   height: auto;
-  margin-bottom: 10px;
-      }
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #000;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+}
+
+.swiper-button-next {
+  right: 10px;
+}
+
+.swiper-button-prev {
+  left: 10px;
+}
