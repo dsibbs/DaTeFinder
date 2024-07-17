@@ -1,11 +1,11 @@
 import confetti from 'canvas-confetti';
 import Swiper from 'swiper/bundle';
+
 const confettiCanvas = document.getElementById('canvas');
 const confettiInstance = confetti.create(confettiCanvas, {
   resize: true,
   useWorker: true,
 });
-
 
 function initializeSwiper() {
   new Swiper('.swiper-container', {
@@ -23,113 +23,101 @@ function initializeSwiper() {
   });
 }
 
-function fetchRestaurants() {
-  const townName = document.getElementById('locationInput').value;
-  const selectedFoodTypes = Array.from(document.querySelectorAll('input[name="foodType"]:checked')).map(checkbox => checkbox.value);
+function fetchResults(endpoint, body) {
+  return fetch(`http://localhost:5001/${endpoint}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  }).then(response => response.json());
+}
 
-  if (townName) {
-    fetch('http://localhost:5001/restaurants', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        location: townName,
-        foodTypes: selectedFoodTypes,
-      }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      const restaurantList = document.getElementById('restaurantList');
-      restaurantList.innerHTML = '';
-      if (data.restaurants && data.restaurants.length > 0) {
-        data.restaurants.forEach(restaurant => {
-          const div = document.createElement('div');
-          div.className = 'swiper-slide';
-          div.innerHTML = `
-            <div class="restaurant-card">
-              <img src="${restaurant.photo_url}" alt="${restaurant.name}">
-              <div class="restaurant-card-content">
-                <h3>${restaurant.name}</h3>
-                <p>Rating: ${restaurant.rating}</p>
-                <p>Open Now: ${restaurant.open}</p>
-                <p>${restaurant.address}</p>
-              </div>
-            </div>`;
-          restaurantList.appendChild(div);
-        });
-        initializeSwiper();
-      } else {
-        restaurantList.innerHTML = 'No restaurants found.';
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      document.getElementById('restaurantList').innerHTML = 'An error occurred.';
+function displayResults(results) {
+  const resultList = document.getElementById('resultList');
+  resultList.innerHTML = '';
+
+  if (results && results.length > 0) {
+    results.forEach(result => {
+      const div = document.createElement('div');
+      div.className = 'swiper-slide';
+      div.innerHTML = `
+        <div class="result-card">
+          <img src="${result.photo_url}" alt="${result.name}">
+          <div class="result-card-content">
+            <h3>${result.name}</h3>
+            <p>Rating: ${result.rating}</p>
+            <p>Open Now: ${result.open}</p>
+            <p>${result.address}</p>
+          </div>
+        </div>`;
+      resultList.appendChild(div);
     });
+    initializeSwiper();
   } else {
-    document.getElementById('restaurantList').innerHTML = 'Please enter a town name.';
+    resultList.innerHTML = 'No results found.';
   }
 }
 
-function surpriseMe() {
+document.getElementById('getRestaurantsBtn').addEventListener('click', () => {
   const townName = document.getElementById('locationInput').value;
   const selectedFoodTypes = Array.from(document.querySelectorAll('input[name="foodType"]:checked')).map(checkbox => checkbox.value);
-
   if (townName) {
-    fetch('http://localhost:5001/restaurants', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        location: townName,
-        foodTypes: selectedFoodTypes,
-      }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      const restaurantList = document.getElementById('restaurantList');
-      restaurantList.innerHTML = '';
-      if (data.restaurants && data.restaurants.length > 0) {
-        const randomRestaurant = data.restaurants[Math.floor(Math.random() * data.restaurants.length)];
-        const div = document.createElement('div');
-        div.className = 'swiper-slide';
-        div.innerHTML = `
-          <div class="restaurant-card">
-            <img src="${randomRestaurant.photo_url}" alt="${randomRestaurant.name}">
-            <div class="restaurant-card-content">
-              <h3>${randomRestaurant.name}</h3>
-              <p>Rating: ${randomRestaurant.rating}</p>
-              <p>Open Now: ${randomRestaurant.open}</p>
-              <p>${randomRestaurant.address}</p>
-            </div>
-          </div>`;
-        restaurantList.appendChild(div);
-
-        initializeSwiper();
-        confettiInstance({ particleCount: 200, spread: 200 });
-      } else {
-        restaurantList.innerHTML = 'No restaurants found.';
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      document.getElementById('restaurantList').innerHTML = 'An error occurred.';
+    fetchResults('restaurants', { location: townName, foodTypes: selectedFoodTypes }).then(data => {
+      displayResults(data.restaurants.slice(0, 5));
     });
   } else {
-    document.getElementById('restaurantList').innerHTML = 'Please enter a town name.';
+    document.getElementById('resultList').innerHTML = 'Please enter a town name.';
   }
-}
+});
 
-// Event listener for the button click
-document.getElementById('getRestaurantsBtn').addEventListener('click', fetchRestaurants);
+document.getElementById('getActivitiesBtn').addEventListener('click', () => {
+  const townName = document.getElementById('locationInput').value;
+  const selectedActivityTypes = Array.from(document.querySelectorAll('input[name="activityType"]:checked')).map(checkbox => checkbox.value);
+  if (townName) {
+    fetchResults('activities', { location: townName, activityTypes: selectedActivityTypes }).then(data => {
+      displayResults(data.activities.slice(0, 5));
+    });
+  } else {
+    document.getElementById('resultList').innerHTML = 'Please enter a town name.';
+  }
+});
 
-document.getElementById('surpriseMeBtn').addEventListener('click', surpriseMe);
-
-// Event listener for the Enter key press in the input field
 document.getElementById('locationInput').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
-    fetchRestaurants();
+    const selectedFoodTypes = Array.from(document.querySelectorAll('input[name="foodType"]:checked')).map(checkbox => checkbox.value);
+    fetchResults('restaurants', { location: e.target.value, foodTypes: selectedFoodTypes }).then(data => {
+      displayResults(data.restaurants.slice(0, 5));
+    });
+  }
+});
+
+document.getElementById('surpriseMeBtn').addEventListener('click', () => {
+  const townName = document.getElementById('locationInput').value;
+  const foodTypes = ['chinese', 'italian', 'mexican', 'japanese', 'jamaican', 'indian', 'mediterranean'];
+  const activityTypes = ['bowling', 'mini_golf', 'movie', 'museum'];
+
+  const selectedFoodTypes = [foodTypes[Math.floor(Math.random() * foodTypes.length)]];
+  const selectedActivityTypes = [activityTypes[Math.floor(Math.random() * activityTypes.length)]];
+
+  if (townName) {
+    const isRestaurant = Math.random() < 0.5;
+
+    const fetchPromise = isRestaurant
+      ? fetchResults('restaurants', { location: townName, foodTypes: selectedFoodTypes })
+      : fetchResults('activities', { location: townName, activityTypes: selectedActivityTypes });
+
+    fetchPromise.then(data => {
+      const result = isRestaurant ? data.restaurants[0] : data.activities[0];
+      displayResults([result]);
+    });
+
+    confettiInstance({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+  } else {
+    document.getElementById('resultList').innerHTML = 'Please enter a town name.';
   }
 });

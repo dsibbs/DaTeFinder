@@ -3,12 +3,32 @@ from flask_cors import CORS
 import requests
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 
-API_KEY = str(os.getenv('API_KEY'))
+API_KEY = os.getenv('API_KEY')
+
+def geocode_location(location):
+    geocode_url = f'https://maps.googleapis.com/maps/api/geocode/json?address={location}&key={API_KEY}'
+    geocode_response = requests.get(geocode_url).json()
+    if not geocode_response['results']:
+        return None
+    return geocode_response['results'][0]['geometry']['location']
+
+def get_places(lat, lng, place_type, keywords):
+    keyword_query = '|'.join(keywords)
+    places_url = f'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius=1500&type={place_type}&keyword={keyword_query}&key={API_KEY}'
+    return requests.get(places_url).json()
+
+def get_place_details(place_id):
+    place_details_url = f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name,formatted_address,photo,rating,opening_hours&key={API_KEY}'
+    return requests.get(place_details_url).json()
+
+def get_photo_url(photo_reference):
+    return f'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={API_KEY}'
 
 @app.route('/restaurants', methods=['POST'])
 def get_restaurants():
@@ -19,21 +39,11 @@ def get_restaurants():
     if not location:
         return jsonify({'error': 'Location is required'}), 400
 
-    # Geocode the location to get latitude and longitude
-    geocode_url = f'https://maps.googleapis.com/maps/api/geocode/json?address={location}&key={API_KEY}'
-    geocode_response = requests.get(geocode_url).json()
-
-    if not geocode_response['results']:
+    lat_lng = geocode_location(location)
+    if not lat_lng:
         return jsonify({'error': 'Location not found'}), 404
 
-    lat_lng = geocode_response['results'][0]['geometry']['location']
-    lat = lat_lng['lat']
-    lng = lat_lng['lng']
-
-    keyword_query = '|'.join(food_types)
-    places_url = f'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius=1500&type=restaurant&keyword={keyword_query}&key={API_KEY}'
-    places_response = requests.get(places_url).json()
-
+    places_response = get_places(lat_lng['lat'], lat_lng['lng'], 'restaurant', food_types)
     if 'results' not in places_response or not places_response['results']:
         return jsonify({'error': 'No restaurants found'}), 404
 
@@ -54,19 +64,50 @@ def get_restaurants():
         #print("place_deatails_ response is: ", place_details_response)
 
         if 'result' in place_details_response:
+            result = place_details_response['result']
             restaurant = {
-                'name': place_details_response['result']['name'],
-                'address': place_details_response['result']['formatted_address'],
-                'photo_url': get_photo_url(place_details_response['result']['photos'][0]['photo_reference']) if 'photos' in place_details_response['result'] else None,
-                'rating': place_rating,
-                'open': "Yes" if place_open else "No"
+                'name': result.get('name'),
+                'address': result.get('formatted_address'),
+                'photo_url': get_photo_url(result['photos'][0]['photo_reference']) if 'photos' in result else None,
+                'rating': result.get('rating'),
+                'open': "Yes" if result.get('opening_hours', {}).get('open_now') else "No"
             }
             restaurants.append(restaurant)
 
     return jsonify({'restaurants': restaurants})
 
-def get_photo_url(photo_reference):
-    return f'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={API_KEY}'
+@app.route('/activities', methods=['POST'])
+def get_activities():
+    data = request.get_json()
+    location = data.get('location')
+    activity_types = data.get('activityTypes', [])
+
+    if not location:
+        return jsonify({'error': 'Location is required'}), 400
+
+    lat_lng = geocode_location(location)
+    if not lat_lng:
+        return jsonify({'error': 'Location not found'}), 404
+
+    places_response = get_places(lat_lng['lat'], lat_lng['lng'], 'point_of_interest', activity_types)
+    if 'results' not in places_response or not places_response['results']:
+        return jsonify({'error': 'No activities found'}), 404
+
+    activities = []
+    for place in places_response['results'][:5]:  # Get the top 5 results
+        place_details_response = get_place_details(place['place_id'])
+        if 'result' in place_details_response:
+            result = place_details_response['result']
+            activity = {
+                'name': result.get('name'),
+                'address': result.get('formatted_address'),
+                'photo_url': get_photo_url(result['photos'][0]['photo_reference']) if 'photos' in result else None,
+                'rating': result.get('rating'),
+                'open': "Yes" if result.get('opening_hours', {}).get('open_now') else "No"
+            }
+            activities.append(activity)
+
+    return jsonify({'activities': activities})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

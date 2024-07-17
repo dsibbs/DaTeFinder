@@ -23,7 +23,7 @@ body {
   text-align: center;
 }
 
-.restaurant-card {
+.result-card {
   margin-bottom: 20px;
   padding: 10px;
   border: 1px solid #ccc;
@@ -37,7 +37,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.restaurant-card img {
+.result-card img {
   max-width: 100%;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -45,17 +45,17 @@ body {
   object-fit: cover;
 }
 
-.restaurant-card-content {
+.result-card-content {
   padding: 15px;
   text-align: center;
 }
 
-.restaurant-card-content h3 {
+.result-card-content h3 {
   margin: 10px 0;
   font-size: 1.5em;
 }
 
-.restaurant-card-content p {
+.result-card-content p {
   margin: 5px 0;
   font-size: 1em;
   color: #555;
