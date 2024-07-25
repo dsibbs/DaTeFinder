@@ -90,3 +90,101 @@ body {
 .swiper-button-prev {
   left: 10px;
 }
+
+
+/* Style the input box */
+#locationInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+#locationInput:focus {
+  border-color: #007bff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Style the buttons */
+button {
+  padding: 10px 20px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  background-color: #5dc7c2;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: #3d9797;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style checkboxes and labels */
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+label {
+  margin-right: 20px;
+  font-size: 16px;
+}
+/* Hide the default checkbox */
+input[type="checkbox"] {
+  display: none;
+}
+
+/* Create a custom checkbox */
+input[type="checkbox"] + label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  margin-right: 20px;
+  user-select: none;
+}
+
+input[type="checkbox"] + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #5dc7c2;
+  border-radius: 3px;
+  background-color: white;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="checkbox"]:checked + label:before {
+  background-color: #5dc7c2;
+  border-color: #5dc7c2;
+}
+
+input[type="checkbox"] + label:after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  opacity: 0;
+  transform: rotate(45deg);
+  transition: opacity 0.3s ease;
+}
+
+input[type="checkbox"]:checked + label:after {
+  opacity: 1;
+}
