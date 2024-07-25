@@ -7,6 +7,10 @@ const confettiInstance = confetti.create(confettiCanvas, {
   useWorker: true,
 });
 
+const escapeHtml = (unsafe) => {
+    return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+}
+
 function initializeSwiper() {
   new Swiper('.swiper-container', {
     loop: true,
@@ -60,7 +64,7 @@ function displayResults(results) {
 }
 
 document.getElementById('getRestaurantsBtn').addEventListener('click', () => {
-  const townName = document.getElementById('locationInput').value;
+  const townName = escapeHtml(document.getElementById('locationInput').value);
   const selectedFoodTypes = Array.from(document.querySelectorAll('input[name="foodType"]:checked')).map(checkbox => checkbox.value);
   if (townName) {
     fetchResults('restaurants', { location: townName, foodTypes: selectedFoodTypes }).then(data => {
@@ -72,7 +76,7 @@ document.getElementById('getRestaurantsBtn').addEventListener('click', () => {
 });
 
 document.getElementById('getActivitiesBtn').addEventListener('click', () => {
-  const townName = document.getElementById('locationInput').value;
+  const townName = escapeHtml(document.getElementById('locationInput').value);
   const selectedActivityTypes = Array.from(document.querySelectorAll('input[name="activityType"]:checked')).map(checkbox => checkbox.value);
   if (townName) {
     fetchResults('activities', { location: townName, activityTypes: selectedActivityTypes }).then(data => {
