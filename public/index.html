@@ -14,42 +14,58 @@
 
 <body>
     <canvas id="canvas"></canvas>
-    <h2>Find Restaurants</h2>
-    <input type="text" id="locationInput" placeholder="Enter town name" />
-    <div>
+    <h1>DaTeFinder</h1>
+
+    <div id="locationSection">
+        <h2>Find a Date Location</h2>
+        <input type="text" id="locationInput" placeholder="Enter town name" />
+        <button id="planDateBtn">Plan Date</button>
+    </div>
+
+    <div id="filters" class="filters" style="display: none;">
         <h3>Select food types:</h3>
-        <input type="checkbox" id="chinese" name="foodType" value="chinese" />
-        <label for="chinese">Chinese</label>
-        <input type="checkbox" id="italian" name="foodType" value="italian" />
-        <label for="italian">Italian</label>
-        <input type="checkbox" id="mexican" name="foodType" value="mexican" />
-        <label for="mexican">Mexican</label>
-        <input type="checkbox" id="japanese" name="foodType" value="japanese" />
-        <label for="japanese">Japanese</label>
-        <input type="checkbox" id="jamaican" name="foodType" value="jamaican" />
-        <label for="jamaican">Jamaican</label>
-        <input type="checkbox" id="indian" name="foodType" value="indian" />
-        <label for="indian">Indian</label>
-        <input type="checkbox" id="mediterranean" name="foodType" value="mediterranean" />
-        <label for="mediterranean">Mediterranean</label>
-    </div>
-    <button id="getRestaurantsBtn">Get Restaurants</button>
+        <div id="foodFilters">
+            <div class = "foodCheckboxes">
+            <input type="checkbox" id="chinese" name="foodType" value="chinese" />
+            <label for="chinese">Chinese</label>
+            <input type="checkbox" id="italian" name="foodType" value="italian" />
+            <label for="italian">Italian</label>
+            <input type="checkbox" id="mexican" name="foodType" value="mexican" />
+            <label for="mexican">Mexican</label>
+            <input type="checkbox" id="japanese" name="foodType" value="japanese" />
+            <label for="japanese">Japanese</label>
+            <input type="checkbox" id="jamaican" name="foodType" value="jamaican" />
+            <label for="jamaican">Jamaican</label>
+            <input type="checkbox" id="indian" name="foodType" value="indian" />
+            <label for="indian">Indian</label>
+            <input type="checkbox" id="mediterranean" name="foodType" value="mediterranean" />
+            <label for="mediterranean">Mediterranean</label>
+            </div>
+            <br/>
+            <button id="getRestaurantsBtn">Get Restaurants</button>
 
-    <h2>Find Activities</h2>
-    <div>
+        </div>
+
         <h3>Select activity types:</h3>
-        <input type="checkbox" id="bowling" name="activityType" value="bowling" />
-        <label for="bowling">Bowling</label>
-        <input type="checkbox" id="mini_golf" name="activityType" value="mini_golf" />
-        <label for="mini_golf">Mini Golf</label>
-        <input type="checkbox" id="movie" name="activityType" value="movie" />
-        <label for="Movie">Movie</label>
-        <input type="checkbox" id="museum" name="activityType" value="museum" />
-        <label for="museum">Museum</label>
-    </div>
-    <button id="getActivitiesBtn">Get Activities</button>
 
-    <button id="surpriseMeBtn">Surprise Me</button>
+        <div id="activityFilters">
+            <div class ="Checkboxes">
+            <input type="checkbox" id="bowling" name="activityType" value="bowling" />
+            <label for="bowling">Bowling</label>
+            <input type="checkbox" id="mini_golf" name="activityType" value="mini_golf" />
+            <label for="mini_golf">Mini Golf</label>
+            <input type="checkbox" id="movie" name="activityType" value="movie" />
+            <label for="Movie">Movie</label>
+            <input type="checkbox" id="museum" name="activityType" value="museum" />
+            <label for="museum">Museum</label>
+            </div>
+            <br/>
+
+            <button id="getActivitiesBtn">Get Activities</button>
+
+        </div>
+
+    </div>
 
     <div class="swiper-container">
         <div class="swiper-wrapper" id="resultList"></div>
