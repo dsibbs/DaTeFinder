@@ -21,10 +21,20 @@
         <input type="text" id="locationInput" placeholder="Enter town name" />
         <button id="planDateBtn">Plan Date</button>
     </div>
+     <div id="optionSection" class="optionSection" style="display: none;">
+        <h3>Find Restaurants and/or Dates</h3>
+        <div id="optionFilters">
+            <input type="checkbox" id="restaurants" name="pickOptions" value="restaurtants"/>
+            <label for="restaurants">Restaurants</label>
+            <input type="checkbox" id="activities" name="pickOptions" value="activities"/>
+            <label for="activities">Activities</label>
+            </div>
+        <button id="FindPlacesBtn">Find Places</button>
+    </div>
 
     <div id="filters" class="filters" style="display: none;">
-        <h3>Select food types:</h3>
         <div id="foodFilters">
+            <h3>Select food types:</h3>
             <div class = "foodCheckboxes">
             <input type="checkbox" id="chinese" name="foodType" value="chinese" />
             <label for="chinese">Chinese</label>
@@ -45,17 +55,15 @@
             <button id="getRestaurantsBtn">Get Restaurants</button>
 
         </div>
-
-        <h3>Select activity types:</h3>
-
         <div id="activityFilters">
+            <h3>Select activity types:</h3>
             <div class ="Checkboxes">
             <input type="checkbox" id="bowling" name="activityType" value="bowling" />
             <label for="bowling">Bowling</label>
             <input type="checkbox" id="mini_golf" name="activityType" value="mini_golf" />
             <label for="mini_golf">Mini Golf</label>
             <input type="checkbox" id="movie" name="activityType" value="movie" />
-            <label for="Movie">Movie</label>
+            <label for="movie">Movie</label>
             <input type="checkbox" id="museum" name="activityType" value="museum" />
             <label for="museum">Museum</label>
             </div>

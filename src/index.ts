@@ -62,20 +62,50 @@ function displayResults(results) {
     resultList.innerHTML = 'No results found.';
   }
 }
-
-// Event listener for the "Plan Date" button
+//Event listener for "Plan Date" button
 document.getElementById('planDateBtn').addEventListener('click', () => {
   const townName = escapeHtml(document.getElementById('locationInput').value);
   if (townName) {
-    const filters = document.getElementById('filters');
-    const resultList = document.getElementById('resultList');
-    const locationSection = document.getElementById('locationSection');
-    
-    filters.style.display = 'flex';
+    const optSection = document.getElementById('optionSection');
+    optSection.style.display = 'flex';
     setTimeout(() => {
-      filters.classList.add('show');
+      optSection.classList.add('show');
     }, 10);
 
+  } else {
+    alert('Please enter a town name.');
+  }
+});
+
+// Event listener for the "Find Places" button
+document.getElementById('FindPlacesBtn').addEventListener('click', () => {
+  const townName = escapeHtml(document.getElementById('locationInput').value);
+  if (townName) {
+     let foodCheck = document.getElementById('restaurants')
+     let activityCheck = document.getElementById('activities')
+     if (foodCheck.checked && activityCheck.checked){
+        const foodFilters = document.getElementById('foodFilters');
+        const activityFilters = document.getElementById('activityFilters');
+        foodFilters.style.display = 'flex';
+        activityFilters.style.display = 'flex';
+        setTimeout(() => {
+        foodFilters.classList.add('show');
+        activityFilters.classList.add('show');
+        }, 10);
+    }
+    else if(foodCheck.checked){
+        const filters = document.getElementById('foodFilters');
+        filters.style.display = 'flex';
+        setTimeout(() => {
+        filters.classList.add('show');
+        }, 10);
+}else{
+    const filters = document.getElementById('activityFilters');
+        filters.style.display = 'flex';
+        setTimeout(() => {
+        filters.classList.add('show');
+        }, 10);
+}
   } else {
     alert('Please enter a town name.');
   }

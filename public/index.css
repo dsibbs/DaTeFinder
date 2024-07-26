@@ -1,13 +1,14 @@
-#filters, #results {
+#results, #optionSection, #foodFilters, #activityFilters {
   display: none;
 }
-.filters {
+
+.foodFilters, .activityFilters, .optionSection {
   opacity: 0;
   transform: translateY(100%);
   transition: opacity 2s ease-in-out, transform 2s ease-in-out;
 }
 
-.filters.show {
+.foodFilters, .activityFilters, .optionSection.show {
   opacity: 1;
   transform: translateY(0);
 }
@@ -226,11 +227,20 @@ input[type="checkbox"]:checked + label:after {
 }
 
 /* Center the filters */
-#filters {
+#filters, #optionSection {
   display: flex !important;
   flex-direction: column;
   align-items: center; 
   justify-content: center;
   margin-top: 20px;
   text-align: center;
+}
+
+#foodFilters, #activityFilters {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  text-align: center;
+
 }
