@@ -94,7 +94,7 @@ def get_activities():
         return jsonify({'error': 'No activities found'}), 404
 
     activities = []
-    for place in places_response['results'][:5]:  # Get the top 5 results
+    for place in places_response['results']: 
         place_details_response = get_place_details(place['place_id'])
         if 'result' in place_details_response:
             result = place_details_response['result']

@@ -7,12 +7,11 @@
     <meta name="description" content="Web site created using create-snowpack-app" />
     <link rel="stylesheet" type="text/css" href="/index.css" />
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-   <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet'>
     <title>DaTeFinder</title>
 </head>
-<div class="headerbar">DaTeFinder</div>
-
 <body>
+    <div class="headerbar">DaTeFinder</div>
     <canvas id="canvas"></canvas>
     <h1>DaTeFinder</h1>
 
@@ -34,53 +33,58 @@
 
     <div id="filters" class="filters" style="display: none;">
         <div id="foodFilters">
-            <h3>Select food types:</h3>
-            <div class = "foodCheckboxes">
-            <input type="checkbox" id="chinese" name="foodType" value="chinese" />
-            <label for="chinese">Chinese</label>
-            <input type="checkbox" id="italian" name="foodType" value="italian" />
-            <label for="italian">Italian</label>
-            <input type="checkbox" id="mexican" name="foodType" value="mexican" />
-            <label for="mexican">Mexican</label>
-            <input type="checkbox" id="japanese" name="foodType" value="japanese" />
-            <label for="japanese">Japanese</label>
-            <input type="checkbox" id="jamaican" name="foodType" value="jamaican" />
-            <label for="jamaican">Jamaican</label>
-            <input type="checkbox" id="indian" name="foodType" value="indian" />
-            <label for="indian">Indian</label>
-            <input type="checkbox" id="mediterranean" name="foodType" value="mediterranean" />
-            <label for="mediterranean">Mediterranean</label>
+            <div class="foodCheckboxes">
+                <input type="checkbox" id="chinese" name="foodType" value="chinese" />
+                <label for="chinese">Chinese</label>
+                <input type="checkbox" id="italian" name="foodType" value="italian" />
+                <label for="italian">Italian</label>
+                <input type="checkbox" id="mexican" name="foodType" value="mexican" />
+                <label for="mexican">Mexican</label>
+                <input type="checkbox" id="japanese" name="foodType" value="japanese" />
+                <label for="japanese">Japanese</label>
+                <input type="checkbox" id="jamaican" name="foodType" value="jamaican" />
+                <label for="jamaican">Jamaican</label>
+                <input type="checkbox" id="indian" name="foodType" value="indian" />
+                <label for="indian">Indian</label>
+                <input type="checkbox" id="mediterranean" name="foodType" value="mediterranean" />
+                <label for="mediterranean">Mediterranean</label>
             </div>
             <br/>
             <button id="getRestaurantsBtn">Get Restaurants</button>
-
         </div>
+        <div id="food-results" class="food-results">
+            <div class="swiper-container food-swiper">
+                <div class="swiper-wrapper" id="foodResultList"></div>
+                <div class="swiper-pagination-food"></div>
+                <div class="swiper-button-next-food"></div>
+                <div class="swiper-button-prev-food"></div>
+            </div>
+        </div>
+        <h3>Select activity types:</h3>
         <div id="activityFilters">
-            <h3>Select activity types:</h3>
-            <div class ="Checkboxes">
-            <input type="checkbox" id="bowling" name="activityType" value="bowling" />
-            <label for="bowling">Bowling</label>
-            <input type="checkbox" id="mini_golf" name="activityType" value="mini_golf" />
-            <label for="mini_golf">Mini Golf</label>
-            <input type="checkbox" id="movie" name="activityType" value="movie" />
-            <label for="movie">Movie</label>
-            <input type="checkbox" id="museum" name="activityType" value="museum" />
-            <label for="museum">Museum</label>
+            <div class="Checkboxes">
+                <input type="checkbox" id="bowling" name="activityType" value="bowling" />
+                <label for="bowling">Bowling</label>
+                <input type="checkbox" id="mini_golf" name="activityType" value="mini_golf" />
+                <label for="mini_golf">Mini Golf</label>
+                <input type="checkbox" id="movie" name="activityType" value="movie" />
+                <label for="movie">Movie</label>
+                <input type="checkbox" id="museum" name="activityType" value="museum" />
+                <label for="museum">Museum</label>
             </div>
             <br/>
-
             <button id="getActivitiesBtn">Get Activities</button>
-
         </div>
-
+        <div id="activity-results" class="activity-results">
+            <div class="swiper-container activity-swiper">
+                <div class="swiper-wrapper" id="activityResultList"></div>
+                <div class="swiper-pagination-activity"></div>
+                <div class="swiper-button-next-activity"></div>
+                <div class="swiper-button-prev-activity"></div>
+            </div>
+        </div>
     </div>
 
-    <div class="swiper-container">
-        <div class="swiper-wrapper" id="resultList"></div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="dist/index.js" type="module"></script>

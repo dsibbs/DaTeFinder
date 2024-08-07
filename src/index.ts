@@ -8,23 +8,43 @@ const confettiInstance = confetti.create(confettiCanvas, {
 });
 
 const escapeHtml = (unsafe) => {
-    return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+  return unsafe.replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
 }
 
-function initializeSwiper() {
-  new Swiper('.swiper-container', {
-    loop: true,
-    slidesPerView: 3,
-    spaceBetween: 300,
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-  });
+function initializeSwiper(containerClass) {
+  if (containerClass === '.food-swiper') {
+    new Swiper(containerClass, {
+      loop: true,
+      slidesPerView: 1,
+      spaceBetween: 30,
+      pagination: {
+        el: '.swiper-pagination-food',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next-food',
+        prevEl: '.swiper-button-prev-food',
+      },
+    });
+  } else {
+    new Swiper(containerClass, {
+      loop: true,
+      slidesPerView: 1,
+      spaceBetween: 30,
+      pagination: {
+        el: '.swiper-pagination-activity',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next-activity',
+        prevEl: '.swiper-button-prev-activity',
+      },
+    });
+  }
 }
 
 function fetchResults(endpoint, body) {
@@ -37,8 +57,8 @@ function fetchResults(endpoint, body) {
   }).then(response => response.json());
 }
 
-function displayResults(results) {
-  const resultList = document.getElementById('resultList');
+function displayResults(results, containerId) {
+  const resultList = document.getElementById(containerId);
   resultList.innerHTML = '';
 
   if (results && results.length > 0) {
@@ -57,7 +77,7 @@ function displayResults(results) {
         </div>`;
       resultList.appendChild(div);
     });
-    initializeSwiper();
+    initializeSwiper(containerId === 'foodResultList' ? '.food-swiper' : '.activity-swiper');
   } else {
     resultList.innerHTML = 'No results found.';
   }
@@ -71,7 +91,6 @@ document.getElementById('planDateBtn').addEventListener('click', () => {
     setTimeout(() => {
       optSection.classList.add('show');
     }, 10);
-
   } else {
     alert('Please enter a town name.');
   }
@@ -116,11 +135,11 @@ document.getElementById('getRestaurantsBtn').addEventListener('click', () => {
   const selectedFoodTypes = Array.from(document.querySelectorAll('input[name="foodType"]:checked')).map(checkbox => checkbox.value);
   if (townName) {
     fetchResults('restaurants', { location: townName, foodTypes: selectedFoodTypes }).then(data => {
-      displayResults(data.restaurants.slice(0, 5));
-      document.getElementById('results').style.display = 'block';  // Show the results section
+      displayResults(data.restaurants.slice(0, 5), 'foodResultList');
+      document.querySelector('.food-results').style.display = 'block';
     });
   } else {
-    document.getElementById('resultList').innerHTML = 'Please enter a town name.';
+    document.getElementById('foodResultList').innerHTML = 'Please enter a town name.';
   }
 });
 
@@ -129,11 +148,11 @@ document.getElementById('getActivitiesBtn').addEventListener('click', () => {
   const selectedActivityTypes = Array.from(document.querySelectorAll('input[name="activityType"]:checked')).map(checkbox => checkbox.value);
   if (townName) {
     fetchResults('activities', { location: townName, activityTypes: selectedActivityTypes }).then(data => {
-      displayResults(data.activities.slice(0, 5));
-      document.getElementById('results').style.display = 'block';  // Show the results section
+      displayResults(data.activities, 'activityResultList');
+      document.querySelector('.activity-results').style.display = 'block';
     });
   } else {
-    document.getElementById('resultList').innerHTML = 'Please enter a town name.';
+    document.getElementById('activityResultList').innerHTML = 'Please enter a town name.';
   }
 });
 
@@ -147,5 +166,3 @@ document.getElementById('locationInput').addEventListener('keypress', function (
     }
   }
 });
-
-

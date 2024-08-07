@@ -100,9 +100,9 @@ body {
 }
 
 .swiper-container {
-  width: 100%;
-  max-width: 350px;
-  height: auto;
+  width: 300px;
+  height: 400px;
+  overflow: hidden;
 }
 
 .swiper-slide {
@@ -110,22 +110,34 @@ body {
   justify-content: center;
   align-items: center;
 }
+.swiper-pagination-food{
+  position: relative;
+}
 
-.swiper-button-next,
-.swiper-button-prev {
+.swiper-button-next-food,
+.swiper-button-prev-food {
   color: #000;
   top: 50%;
   transform: translateY(-50%);
   width: 30px;
   height: 30px;
-}
-
-.swiper-button-next {
   right: 10px;
+  left:10px;
 }
 
-.swiper-button-prev {
-  left: 10px;
+.swiper-pagination-activity{
+  position: relative;
+}
+
+.swiper-button-next-activity,
+.swiper-button-prev-activity {
+  color: #000;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  right: 10px;
+  left:10px;
 }
 
 /* Center and style the input box */
