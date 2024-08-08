@@ -69,8 +69,8 @@ def get_restaurants():
                 'name': result.get('name'),
                 'address': result.get('formatted_address'),
                 'photo_url': get_photo_url(result['photos'][0]['photo_reference']) if 'photos' in result else None,
-                'rating': result.get('rating'),
-                'open': "Yes" if result.get('opening_hours', {}).get('open_now') else "No"
+                'open': "Yes" if place_open else "No",
+                'rating': place_rating
             }
             restaurants.append(restaurant)
 

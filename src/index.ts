@@ -118,12 +118,14 @@ document.getElementById('FindPlacesBtn').addEventListener('click', () => {
         setTimeout(() => {
         filters.classList.add('show');
         }, 10);
-}else{
+}else if(activityCheck.checked){
     const filters = document.getElementById('activityFilters');
         filters.style.display = 'flex';
         setTimeout(() => {
         filters.classList.add('show');
         }, 10);
+}else{
+     alert('Please select date type/types.');
 }
   } else {
     alert('Please enter a town name.');
