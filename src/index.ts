@@ -59,6 +59,8 @@ function fetchResults(endpoint, body) {
 
 function displayResults(results, containerId) {
   const resultList = document.getElementById(containerId);
+  const swiperContainer = resultList.closest('.swiper-container');
+
   resultList.innerHTML = '';
 
   if (results && results.length > 0) {
@@ -77,12 +79,17 @@ function displayResults(results, containerId) {
         </div>`;
       resultList.appendChild(div);
     });
+    swiperContainer.classList.add('has-items');
+
     initializeSwiper(containerId === 'foodResultList' ? '.food-swiper' : '.activity-swiper');
   } else {
     resultList.innerHTML = 'No results found.';
+    swiperContainer.classList.remove('has-items');
+
   }
 }
-//Event listener for "Plan Date" button
+
+// Event listener for "Plan Date" button
 document.getElementById('planDateBtn').addEventListener('click', () => {
   const townName = escapeHtml(document.getElementById('locationInput').value);
   if (townName) {
@@ -139,6 +146,7 @@ document.getElementById('getRestaurantsBtn').addEventListener('click', () => {
     fetchResults('restaurants', { location: townName, foodTypes: selectedFoodTypes }).then(data => {
       displayResults(data.restaurants.slice(0, 5), 'foodResultList');
       document.querySelector('.food-results').style.display = 'block';
+
     });
   } else {
     document.getElementById('foodResultList').innerHTML = 'Please enter a town name.';
