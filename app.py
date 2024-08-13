@@ -24,8 +24,9 @@ def get_places(lat, lng, place_type, keywords):
     return requests.get(places_url).json()
 
 def get_place_details(place_id):
-    place_details_url = f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name,formatted_address,photo,rating,opening_hours&key={API_KEY}'
+    place_details_url = f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name,formatted_address,photo,rating,opening_hours,website&key={API_KEY}'
     return requests.get(place_details_url).json()
+
 
 def get_photo_url(photo_reference):
     return f'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={API_KEY}'
@@ -48,20 +49,14 @@ def get_restaurants():
         return jsonify({'error': 'No restaurants found'}), 404
 
     restaurants = []
-   # print("places_response is: ", places_response)
-    # Sort by ratings of restaurants
-    #print("YOOOOOOOOOO                   ", type(places_response['results']))
-    response = sorted(places_response['results'], key=lambda x: x['rating'], reverse = True)
-    #print("RESPONSE IS: ", response)
-    for place in response[:10]:# Get the top 5 results
-        # Get details including photos for each place
-        #print("place is: ", place)
+    response = sorted(places_response['results'], key=lambda x: x['rating'], reverse=True)
+
+    for place in response[:10]:
         place_rating = place['rating']
         place_open = place['opening_hours']['open_now']
         place_id = place['place_id']
-        place_details_url = f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name,formatted_address,photo&key={API_KEY}'
-        place_details_response = requests.get(place_details_url).json()
-        #print("place_deatails_ response is: ", place_details_response)
+        
+        place_details_response = get_place_details(place_id)
 
         if 'result' in place_details_response:
             result = place_details_response['result']
@@ -70,11 +65,13 @@ def get_restaurants():
                 'address': result.get('formatted_address'),
                 'photo_url': get_photo_url(result['photos'][0]['photo_reference']) if 'photos' in result else None,
                 'open': "Yes" if place_open else "No",
-                'rating': place_rating
+                'rating': place_rating,
+                'website': result.get('website')  # Include website if available
             }
             restaurants.append(restaurant)
 
     return jsonify({'restaurants': restaurants})
+
 
 @app.route('/activities', methods=['POST'])
 def get_activities():

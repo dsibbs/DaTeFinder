@@ -56,38 +56,50 @@ function fetchResults(endpoint, body) {
     body: JSON.stringify(body),
   }).then(response => response.json());
 }
-
 function displayResults(results, containerId) {
   const resultList = document.getElementById(containerId);
   const swiperContainer = resultList.closest('.swiper-container');
-
   resultList.innerHTML = '';
 
   if (results && results.length > 0) {
     results.forEach(result => {
       const div = document.createElement('div');
       div.className = 'swiper-slide';
+
+      // Create Google Maps link for the address
+      const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(result.address)}`;
+
+      // Check if the restaurant has a website
+      const restaurantNameLink = result.website 
+        ? `<a href="${result.website}" target="_blank">${result.name}</a>` 
+        : result.name;
+
       div.innerHTML = `
         <div class="result-card">
           <img src="${result.photo_url}" alt="${result.name}">
           <div class="result-card-content">
-            <h3>${result.name}</h3>
+            <h3>${restaurantNameLink}</h3>
             <p>Rating: ${result.rating}</p>
             <p>Open Now: ${result.open}</p>
-            <p>${result.address}</p>
+            <p><a href="${googleMapsLink}" target="_blank">${result.address}</a></p>
           </div>
         </div>`;
       resultList.appendChild(div);
     });
+
+    // Add the 'has-items' class to the Swiper container
     swiperContainer.classList.add('has-items');
 
     initializeSwiper(containerId === 'foodResultList' ? '.food-swiper' : '.activity-swiper');
   } else {
     resultList.innerHTML = 'No results found.';
+    
+    // Remove the 'has-items' class from the Swiper container
     swiperContainer.classList.remove('has-items');
-
   }
 }
+
+
 
 // Event listener for "Plan Date" button
 document.getElementById('planDateBtn').addEventListener('click', () => {
