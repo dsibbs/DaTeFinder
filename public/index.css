@@ -1,3 +1,28 @@
+.search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar i, .search-bar .location-icon {
+    position: absolute;
+    font-size: 20px; /* Adjust size as needed */
+}
+
+.search-bar i {
+    right: 10px; /* Space from the left edge of the search bar */
+}
+
+.search-bar .location-icon {
+    right: 10px; /* Space from the right edge of the search bar */
+}
+
+#locationInput {
+    padding-left: 30px; /* Space for the left icon */
+    padding-right: 30px; /* Space for the right icon */
+    width: 100%;
+}
+
 #results, #optionSection, #foodFilters, #activityFilters {
   display: none;
 }
@@ -41,7 +66,7 @@ body {
 }
 
 .headerbar {
-  background-color:#5cc7c2;
+  background-color:#379fc8;
   overflow: hidden;
   margin: 0;
   padding: 20px;
