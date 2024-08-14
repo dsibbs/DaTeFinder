@@ -58,7 +58,7 @@ body {
   background-repeat: no-repeat;  /* Prevents the image from repeating */
   background-size: cover;        /* Ensures the image covers the entire body */
   background-position: center;   /* Centers the image */
-  font-family: Lora;
+  font-family: "Lora";
   display: flex;
   flex-direction: column;
   align-items: center;
