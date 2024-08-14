@@ -165,7 +165,7 @@ body {
   transform: translateY(-50%);
   z-index: 10;
   
-  color: #5dc7c2 !important;  /* Change arrow color */
+  color: #379fc8 !important;  /* Change arrow color */
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -215,7 +215,7 @@ button {
   margin: 10px 0;
   border: none;
   border-radius: 5px;
-  background-color: #5dc7c2;
+  background-color: #379fc8;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -223,7 +223,7 @@ button {
 }
 
 button:hover {
-  background-color: #3d9797;
+  background-color: #379fc8;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -259,15 +259,15 @@ input[type="checkbox"] + label:before {
   top: 0;
   width: 18px;
   height: 18px;
-  border: 2px solid #5dc7c2;
+  border: 2px solid #379fc8;
   border-radius: 3px;
   background-color: white;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 input[type="checkbox"]:checked + label:before {
-  background-color: #5dc7c2;
-  border-color: #5dc7c2;
+  background-color: #379fc8;
+  border-color: #379fc8;
 }
 
 input[type="checkbox"] + label:after {
@@ -322,7 +322,7 @@ input[type="checkbox"]:checked + label:after {
 }
 .swiper-container.has-items .swiper-button-next-activity,
 .swiper-container.has-items .swiper-button-prev-activity {
-  color:#3d9797 !important;
+  color:#379fc8 !important;
   display: flex !important;
 }
 
@@ -350,5 +350,5 @@ input[type="checkbox"]:checked + label:after {
   cursor: pointer;         
 }
 .swiper-pagination-bullet-active {
-  background: #3d9797 !important;
+  background: #379fc8 !important;
 }
