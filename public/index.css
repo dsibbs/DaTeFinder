@@ -54,12 +54,16 @@ h1 {
 
 body {
   background-color: #379fc8;
-  background-image: url('images/datefinder_img1.png');
+  background-image: url('images/newBackground.webp');
+  background-repeat: no-repeat;  /* Prevents the image from repeating */
+  background-size: cover;        /* Ensures the image covers the entire body */
+  background-position: center;   /* Centers the image */
   font-family: Lora;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 
 .container {
   text-align: center;
