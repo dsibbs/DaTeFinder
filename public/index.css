@@ -85,6 +85,7 @@ body {
   justify-content: center;
   align-content: center;
   font-size: 50px;
+  font-weight: 200;
   color: #f36b59;
   border-bottom: 1px solid black;
 
@@ -94,7 +95,7 @@ body {
   margin-bottom: 20px;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.8);
   display: flex;
   flex-direction: column;
@@ -102,14 +103,16 @@ body {
   width: 300px;
   height: 400px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .result-card img {
-  max-width: 100%;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
   height: 200px;
+  width: 200px;
   object-fit: cover;
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 
 .result-card-content {
@@ -133,7 +136,9 @@ body {
   height: 400px;
   overflow: hidden;
   position: relative;
-
+  border-radius: 12px;
+align-content: center;
+justify-content: center;
 }
 
 /* Ensure the Swiper container takes up the full width and height you want */
@@ -171,6 +176,7 @@ body {
   border-radius: 50%;
   align-items: center;
   justify-content: center;
+  padding: 0;
 }
 
 /* Position the next button to the right */
