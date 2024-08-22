@@ -155,11 +155,15 @@ document.getElementById('getRestaurantsBtn').addEventListener('click', () => {
   const townName = escapeHtml(document.getElementById('locationInput').value);
   const selectedFoodTypes = Array.from(document.querySelectorAll('input[name="foodType"]:checked')).map(checkbox => checkbox.value);
   if (townName) {
+   if(selectedFoodTypes.length>0){
     fetchResults('restaurants', { location: townName, foodTypes: selectedFoodTypes }).then(data => {
       displayResults(data.restaurants.slice(0, 5), 'foodResultList');
       document.querySelector('.food-results').style.display = 'block';
 
-    });
+    });}else{
+    alert('Please select food type(s).');
+}
+
   } else {
     document.getElementById('foodResultList').innerHTML = 'Please enter a town name.';
   }
@@ -169,10 +173,13 @@ document.getElementById('getActivitiesBtn').addEventListener('click', () => {
   const townName = escapeHtml(document.getElementById('locationInput').value);
   const selectedActivityTypes = Array.from(document.querySelectorAll('input[name="activityType"]:checked')).map(checkbox => checkbox.value);
   if (townName) {
+   if (selectedActivityTypes.length>0){
     fetchResults('activities', { location: townName, activityTypes: selectedActivityTypes }).then(data => {
       displayResults(data.activities, 'activityResultList');
       document.querySelector('.activity-results').style.display = 'block';
-    });
+    });}else{
+    alert('Please select activity type(s).')
+}
   } else {
     document.getElementById('activityResultList').innerHTML = 'Please enter a town name.';
   }
