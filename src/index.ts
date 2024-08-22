@@ -1,12 +1,6 @@
-import confetti from 'canvas-confetti';
 import Swiper from 'swiper/bundle';
 
-const confettiCanvas = document.getElementById('canvas');
-const confettiInstance = confetti.create(confettiCanvas, {
-  resize: true,
-  useWorker: true,
-});
-
+// Escape HTML to prevent XSS attacks
 const escapeHtml = (unsafe) => {
   return unsafe.replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -15,6 +9,7 @@ const escapeHtml = (unsafe) => {
     .replaceAll("'", '&#039;');
 }
 
+// Initialize Swiper
 function initializeSwiper(containerClass) {
   if (containerClass === '.food-swiper') {
     new Swiper(containerClass, {
@@ -47,6 +42,7 @@ function initializeSwiper(containerClass) {
   }
 }
 
+// Fetch results from the server
 function fetchResults(endpoint, body) {
   return fetch(`http://localhost:5001/${endpoint}`, {
     method: 'POST',
@@ -56,6 +52,8 @@ function fetchResults(endpoint, body) {
     body: JSON.stringify(body),
   }).then(response => response.json());
 }
+
+// Display results in the Swiper containers
 function displayResults(results, containerId) {
   const resultList = document.getElementById(containerId);
   const swiperContainer = resultList.closest('.swiper-container');
@@ -66,12 +64,9 @@ function displayResults(results, containerId) {
       const div = document.createElement('div');
       div.className = 'swiper-slide';
 
-      // Create Google Maps link for the address
       const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(result.address)}`;
-
-      // Check if the restaurant has a website
-      const restaurantNameLink = result.website 
-        ? `<a href="${result.website}" target="_blank">${result.name}</a>` 
+      const restaurantNameLink = result.website
+        ? `<a href="${result.website}" target="_blank">${result.name}</a>`
         : result.name;
 
       div.innerHTML = `
@@ -87,18 +82,63 @@ function displayResults(results, containerId) {
       resultList.appendChild(div);
     });
 
-    // Add the 'has-items' class to the Swiper container
     swiperContainer.classList.add('has-items');
-
     initializeSwiper(containerId === 'foodResultList' ? '.food-swiper' : '.activity-swiper');
   } else {
     resultList.innerHTML = 'No results found.';
-    
-    // Remove the 'has-items' class from the Swiper container
     swiperContainer.classList.remove('has-items');
   }
 }
 
+// Function to update filter visibility and clear results
+function updateFilters() {
+  const foodCheck = document.getElementById('restaurants').checked;
+  const activityCheck = document.getElementById('activities').checked;
+  const foodFilters = document.getElementById('foodFilters');
+  const activityFilters = document.getElementById('activityFilters');
+  const foodResults = document.querySelector('.food-results');
+  const activityResults = document.querySelector('.activity-results');
+
+  // Update filter visibility
+  if (foodCheck && activityCheck) {
+    foodFilters.style.display = 'flex';
+    activityFilters.style.display = 'flex';
+    setTimeout(() => {
+      foodFilters.classList.add('show');
+      activityFilters.classList.add('show');
+    }, 10);
+  } else if (foodCheck) {
+    foodFilters.style.display = 'flex';
+    setTimeout(() => {
+      foodFilters.classList.add('show');
+    }, 10);
+    activityFilters.style.display = 'none';
+    activityFilters.classList.remove('show');
+  } else if (activityCheck) {
+    activityFilters.style.display = 'flex';
+    setTimeout(() => {
+      activityFilters.classList.add('show');
+    }, 10);
+    foodFilters.style.display = 'none';
+    foodFilters.classList.remove('show');
+  } else {
+    foodFilters.style.display = 'none';
+    foodFilters.classList.remove('show');
+    activityFilters.style.display = 'none';
+    activityFilters.classList.remove('show');
+  }
+
+  // Clear results if no checkboxes are selected
+  if (!foodCheck) {
+    document.getElementById('foodResultList').innerHTML = '';
+    foodResults.style.display = 'none';
+  }
+
+  if (!activityCheck) {
+    document.getElementById('activityResultList').innerHTML = '';
+    activityResults.style.display = 'none';
+  }
+}
 
 
 // Event listener for "Plan Date" button
@@ -119,72 +159,49 @@ document.getElementById('planDateBtn').addEventListener('click', () => {
 document.getElementById('FindPlacesBtn').addEventListener('click', () => {
   const townName = escapeHtml(document.getElementById('locationInput').value);
   if (townName) {
-     let foodCheck = document.getElementById('restaurants')
-     let activityCheck = document.getElementById('activities')
-     if (foodCheck.checked && activityCheck.checked){
-        const foodFilters = document.getElementById('foodFilters');
-        const activityFilters = document.getElementById('activityFilters');
-        foodFilters.style.display = 'flex';
-        activityFilters.style.display = 'flex';
-        setTimeout(() => {
-        foodFilters.classList.add('show');
-        activityFilters.classList.add('show');
-        }, 10);
-    }
-    else if(foodCheck.checked){
-        const filters = document.getElementById('foodFilters');
-        filters.style.display = 'flex';
-        setTimeout(() => {
-        filters.classList.add('show');
-        }, 10);
-}else if(activityCheck.checked){
-    const filters = document.getElementById('activityFilters');
-        filters.style.display = 'flex';
-        setTimeout(() => {
-        filters.classList.add('show');
-        }, 10);
-}else{
-     alert('Please select date type/types.');
-}
+    updateFilters(); // Update filters based on checkbox states
   } else {
     alert('Please enter a town name.');
   }
 });
 
+// Event listener for the "Get Restaurants" button
 document.getElementById('getRestaurantsBtn').addEventListener('click', () => {
   const townName = escapeHtml(document.getElementById('locationInput').value);
   const selectedFoodTypes = Array.from(document.querySelectorAll('input[name="foodType"]:checked')).map(checkbox => checkbox.value);
   if (townName) {
-   if(selectedFoodTypes.length>0){
-    fetchResults('restaurants', { location: townName, foodTypes: selectedFoodTypes }).then(data => {
-      displayResults(data.restaurants.slice(0, 5), 'foodResultList');
-      document.querySelector('.food-results').style.display = 'block';
-
-    });}else{
-    alert('Please select food type(s).');
-}
-
+    if (selectedFoodTypes.length > 0) {
+      fetchResults('restaurants', { location: townName, foodTypes: selectedFoodTypes }).then(data => {
+        displayResults(data.restaurants.slice(0, 5), 'foodResultList');
+        document.querySelector('.food-results').style.display = 'block';
+      });
+    } else {
+      alert('Please select food type(s).');
+    }
   } else {
-    document.getElementById('foodResultList').innerHTML = 'Please enter a town name.';
+    alert('Please enter a town name.');
   }
 });
 
+// Event listener for the "Get Activities" button
 document.getElementById('getActivitiesBtn').addEventListener('click', () => {
   const townName = escapeHtml(document.getElementById('locationInput').value);
   const selectedActivityTypes = Array.from(document.querySelectorAll('input[name="activityType"]:checked')).map(checkbox => checkbox.value);
   if (townName) {
-   if (selectedActivityTypes.length>0){
-    fetchResults('activities', { location: townName, activityTypes: selectedActivityTypes }).then(data => {
-      displayResults(data.activities, 'activityResultList');
-      document.querySelector('.activity-results').style.display = 'block';
-    });}else{
-    alert('Please select activity type(s).')
-}
+    if (selectedActivityTypes.length > 0) {
+      fetchResults('activities', { location: townName, activityTypes: selectedActivityTypes }).then(data => {
+        displayResults(data.activities, 'activityResultList');
+        document.querySelector('.activity-results').style.display = 'block';
+      });
+    } else {
+      alert('Please select activity type(s).');
+    }
   } else {
-    document.getElementById('activityResultList').innerHTML = 'Please enter a town name.';
+    alert('Please enter a town name.');
   }
 });
 
+// Event listener for location input keypress (Enter key)
 document.getElementById('locationInput').addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
     const townName = escapeHtml(e.target.value);
@@ -194,4 +211,9 @@ document.getElementById('locationInput').addEventListener('keypress', function (
       alert('Please enter a town name.');
     }
   }
+});
+
+// Event listener for checkbox changes
+document.querySelectorAll('input[name="foodType"], input[name="activityType"]').forEach(checkbox => {
+  checkbox.addEventListener('change', updateFilters);
 });
