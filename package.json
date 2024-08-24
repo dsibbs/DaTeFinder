@@ -4,6 +4,7 @@
     "build": "snowpack build"
   },
   "dependencies": {
+    "@types/swiper": "^6.0.0",
     "canvas-confetti": "^1.2.0",
     "snowpack": "^3.0.0",
     "swiper": "^11.1.5"
